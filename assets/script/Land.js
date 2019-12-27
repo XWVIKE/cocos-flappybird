@@ -8,6 +8,8 @@
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] https://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
+const game = require('./Game');
+
 cc.Class({
     extends: cc.Component,
 
@@ -17,11 +19,16 @@ cc.Class({
     },
 
     onLoad () {
-        this.fixBg(this.land_bg[0],this.land_bg[1])
+        this.fixBg(this.land_bg[0],this.land_bg[1]);
+        console.log(game.die)
     },
-
+    onCollisionEnter(other, self) {
+        this.speed = 0;
+    },
     start () {
-
+        cc.director.getCollisionManager().enabled = true;
+        cc.director.getCollisionManager().enabledDebugDraw = true;
+        cc.director.getCollisionManager().enabledDrawBoundingBox = true;
     },
     fixBg(ld1,ld2){
         const ld1Box = ld1.getBoundingBox();

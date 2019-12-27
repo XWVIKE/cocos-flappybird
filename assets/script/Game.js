@@ -12,47 +12,19 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-                //小鸟跳跃高度
-                jumpHeight:0,
-                //小鸟跳跃时间，
-                jumpDuration:0,
-                down:false,
-        Player:{
-            default: null,
-            type:cc.Node
-        }
     },
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        this.jumpAction = this.startJump();
+        cc.director.getCollisionManager().enabled = true;
+        cc.director.getCollisionManager().enabledDebugDraw = true;
+        cc.director.getCollisionManager().enabledDrawBoundingBox = true;
     	//监听触摸开始事件
-    	this.node.on(cc.Node.EventType.TOUCH_START,function(){
-            this.Player.runAction(this.jumpAction);
-        },this);
     },
-
     start () {
-
-    },
-
-    startJump(){
-        this.down = false;
-        const jumpUp = cc.moveBy(this.jumpDuration,cc.v2(0,this.jumpHeight)).easing(cc.easeQuinticActionOut());
-        const sngle = cc.rotateTo(0,30);
-        return cc.sequence(sngle,jumpUp,cc.callFunc(function(e){
-            this.down = true;
-        },this))
-    },
-    endJump(){
-        let droprotate = cc.rotateTo(0.6,-90);
-        let dropAction = cc.moveBy(this.jumpDuration, cc.v2(0, -15)).easing(cc.easeQuinticActionInOut());
-        this.Player.runAction(cc.spawn(dropAction,droprotate))
     },
     update (dt) {
-        if(this.down){
-            this.endJump()
-        }
+        
     },
 });

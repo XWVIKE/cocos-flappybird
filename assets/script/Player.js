@@ -12,26 +12,65 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        //小鸟跳跃高度
-        jumpHeight:0,
-        //小鸟跳跃时间，
-        jumpDuration:0
+         //小鸟跳跃高度
+         jumpHeight:0,
+         //小鸟跳跃时间，
+         jumpDuration:0,
+         down:false,
+         step:1,
+         rotate:0,
+         die:false,
+        bg:{
+            default:null,
+            type:cc.Node
+        }
     },
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        this.jumpAction = this.startJump();
-        this.node.runAction(this.jumpAction)
+        this.bg.on(cc.Node.EventType.TOUCH_START,function(){
+            this.startJump()
+        },this);
+        console.log(this.node)
     },
-    startJump(){
-        const jumpUp = cc.moveBy(this.jumpDuration,cc.v2(0,this.jumpHeight)).easing(cc.easeQuinticActionOut());
-        const jumpDown = cc.moveBy(this.jumpDuration,cc.v2(0,-this.jumpHeight)).easing(cc.easeQuinticActionIn());
-        return cc.repeatForever(cc.sequence(jumpUp,jumpDown))
+    onCollisionEnter(other, self) {
+        this.die = true;
+        this.down = false;
+        this.step=0;
+        this.bg.off(cc.Node.EventType.TOUCH_START)
     },
     start () {
-
     },
+    startJump(){
+        this.down = false;
+        this.step = 1;
+        const jumpUp = cc.moveBy(this.jumpDuration,cc.v2(0,this.jumpHeight)).easing(cc.easeQuinticActionOut());
+        const sngle = cc.rotateTo(0,30);
+        this.node.runAction(cc.spawn(sngle,jumpUp,cc.callFunc(function(e){
+            this.down = true;
+        },this)))
+    },
+    endJump(){
+        this.node.angle -=2;
+        this.node.y-=this.step;
+    },
+    update (dt) {
+        let y = this.node.y;
 
-    // update (dt) {},
+        let rotation = this.node.angle;
+        if(this.die){
+            this.node.y = y;
+            this.node.angle = rotation;
+            return
+        }else{
+            if(this.node.angle<=-90){
+                this.node.angle = -90;
+            }
+            this.step+=1;
+            if(this.down){
+                this.endJump()
+            }
+        }
+    },
 });
