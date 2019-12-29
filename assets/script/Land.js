@@ -20,15 +20,11 @@ cc.Class({
 
     onLoad () {
         this.fixBg(this.land_bg[0],this.land_bg[1]);
-        console.log(game.die)
     },
     onCollisionEnter(other, self) {
         this.speed = 0;
     },
     start () {
-        cc.director.getCollisionManager().enabled = true;
-        cc.director.getCollisionManager().enabledDebugDraw = true;
-        cc.director.getCollisionManager().enabledDrawBoundingBox = true;
     },
     fixBg(ld1,ld2){
         const ld1Box = ld1.getBoundingBox();

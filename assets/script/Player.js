@@ -12,63 +12,63 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-         //小鸟跳跃高度
-         jumpHeight:0,
-         //小鸟跳跃时间，
-         jumpDuration:0,
-         down:false,
-         step:1,
-         rotate:0,
-         die:false,
-        bg:{
-            default:null,
-            type:cc.Node
+        //小鸟跳跃高度
+        jumpHeight: 0,
+        //小鸟跳跃时间，
+        jumpDuration: 0,
+        down: false,
+        step: 1,
+        rotate: 0,
+        die: false,
+        bg: {
+            default: null,
+            type: cc.Node
         }
     },
 
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
-        this.bg.on(cc.Node.EventType.TOUCH_START,function(){
+    onLoad() {
+        this.bg.on(cc.Node.EventType.TOUCH_START, function () {
             this.startJump()
-        },this);
+        }, this);
         console.log(this.node)
     },
     onCollisionEnter(other, self) {
         this.die = true;
         this.down = false;
-        this.step=0;
+        this.step = 0;
         this.bg.off(cc.Node.EventType.TOUCH_START)
     },
-    start () {
+    start() {
     },
-    startJump(){
+    startJump() {
         this.down = false;
         this.step = 1;
-        const jumpUp = cc.moveBy(this.jumpDuration,cc.v2(0,this.jumpHeight)).easing(cc.easeQuinticActionOut());
-        const sngle = cc.rotateTo(0,30);
-        this.node.runAction(cc.spawn(sngle,jumpUp,cc.callFunc(function(e){
+        const jumpUp = cc.moveBy(this.jumpDuration, cc.v2(0, this.jumpHeight)).easing(cc.easeQuinticActionOut());
+        const sngle = cc.rotateTo(0, 30);
+        this.node.runAction(cc.spawn(sngle, jumpUp, cc.callFunc(function (e) {
             this.down = true;
-        },this)))
+        }, this)))
     },
-    endJump(){
-        this.node.angle -=2;
-        this.node.y-=this.step;
+    endJump() {
+        this.node.angle -= 2;
+        this.node.y -= this.step;
     },
-    update (dt) {
+    update(dt) {
         let y = this.node.y;
 
         let rotation = this.node.angle;
-        if(this.die){
+        if (this.die) {
             this.node.y = y;
             this.node.angle = rotation;
             return
-        }else{
-            if(this.node.angle<=-90){
+        } else {
+            if (this.node.angle <= -90) {
                 this.node.angle = -90;
             }
-            this.step+=1;
-            if(this.down){
+            this.step += 1;
+            if (this.down) {
                 this.endJump()
             }
         }

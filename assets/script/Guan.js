@@ -8,24 +8,31 @@
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] https://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-
+function clean(){
+    this.removeFromParent(true);
+}
 cc.Class({
     extends: cc.Component,
 
-    properties: {
+    properties: { 
+        _pool:null,
+        speed:6
     },
 
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
-        cc.director.getCollisionManager().enabled = true;
-        // cc.director.getCollisionManager().enabledDebugDraw = true;
-        // cc.director.getCollisionManager().enabledDrawBoundingBox = true;
-    	//监听触摸开始事件
+    onLoad () { 
+        this.node.x = 1080;
+        this.node.y =-400+ Math.random()*700;
+        this.move()
     },
-    start () {
+    move(){
+        this.node.x-=this.speed;
     },
     update (dt) {
-        
+        this.move();
+        if(this.node.x+this.node.width<=0){
+            clean
+        }
     },
 });
