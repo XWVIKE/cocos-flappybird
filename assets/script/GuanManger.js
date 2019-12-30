@@ -12,11 +12,19 @@ cc.Class({
 
     properties: {
         prefab: cc.Prefab,
+        bg:cc.Node,
+        start:false,
     },
 
     onLoad () {
-        this.schedule(this.createGuan, 1.5);
-        this._pool = new cc.NodePool('Guan');
+        window._pool = {};
+        this.bg.on(cc.Node.EventType.TOUCH_START,function(){
+            this.start = true;
+            this.schedule(this.createGuan, 2);
+        },this)
+        
+        this._pool = new cc.NodePool('Guan2');
+        window._pool = _pool
         this._count = 0;
     },
     createGuan(){
@@ -24,14 +32,14 @@ cc.Class({
         if(!guan){
             guan = cc.instantiate(this.prefab);
             this._count++;
-            guan.addComponent('Guan');
+            guan.addComponent('Guan2');
         }
-        guan._pool = this._pool;
         this.node.addChild(guan)
     },
     start () {
 
     },
 
-    // update (dt) {},
+    update (dt) {
+    },
 });

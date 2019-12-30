@@ -23,11 +23,19 @@ cc.Class({
         bg: {
             default: null,
             type: cc.Node
-        }
+        },
+        target: {
+            default: null,
+            type: cc.Prefab,
+          },
     },
 
     // LIFE-CYCLE CALLBACKS:
-
+    click(){
+        var scene = cc.director.getScene();
+        var node = cc.instantiate(this.target);
+        node.parent = scene;
+    },
     onLoad() {
         this.bg.on(cc.Node.EventType.TOUCH_START, function () {
             this.startJump()
@@ -35,6 +43,8 @@ cc.Class({
         console.log(this.node)
     },
     onCollisionEnter(other, self) {
+        cc.director.pause();
+        this.click()
         this.die = true;
         this.down = false;
         this.step = 0;
