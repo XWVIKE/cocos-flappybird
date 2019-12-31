@@ -17,14 +17,13 @@ cc.Class({
     },
 
     onLoad () {
-        window._pool = {};
+        window._num = 0;
         this.bg.on(cc.Node.EventType.TOUCH_START,function(){
             this.start = true;
             this.schedule(this.createGuan, 2);
         },this)
         
         this._pool = new cc.NodePool('Guan2');
-        window._pool = _pool
         this._count = 0;
     },
     createGuan(){
@@ -34,6 +33,8 @@ cc.Class({
             this._count++;
             guan.addComponent('Guan2');
         }
+        // this.Game.gainScore();
+        window._num++
         this.node.addChild(guan)
     },
     start () {

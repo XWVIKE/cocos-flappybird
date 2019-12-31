@@ -35,12 +35,15 @@ cc.Class({
         var scene = cc.director.getScene();
         var node = cc.instantiate(this.target);
         node.parent = scene;
+        let width = cc.winSize.width;
+        let height = cc.winSize.height;
+        node.setPosition(width/2, height/2);
     },
     onLoad() {
         this.bg.on(cc.Node.EventType.TOUCH_START, function () {
             this.startJump()
         }, this);
-        console.log(this.node)
+        // console.log(this.node)
     },
     onCollisionEnter(other, self) {
         cc.director.pause();

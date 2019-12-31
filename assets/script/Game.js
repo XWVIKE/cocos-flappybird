@@ -13,6 +13,12 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
+        score:{
+            default:null,
+            type:cc.Label
+        },
+        num:0
+        
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -21,11 +27,12 @@ cc.Class({
         cc.director.getCollisionManager().enabled = true;
         // cc.director.getCollisionManager().enabledDebugDraw = true;
         // cc.director.getCollisionManager().enabledDrawBoundingBox = true;
-    	//监听触摸开始事件
+        //监听触摸开始事件
     },
     start () {
     },
     update (dt) {
-        
+        let num = (window._num-2)<=0?0:window._num-2;
+        this.score.string = num.toString()
     },
 });
